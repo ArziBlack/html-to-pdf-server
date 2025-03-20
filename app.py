@@ -1,8 +1,15 @@
-from flask import Flask, request, send_file
+from flask import Flask, request, send_file, make_response
 from weasyprint import HTML
 from io import BytesIO
 
 app = Flask(__name__)
+
+@app.after_request
+def add_cors_headers(response):
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS')
+    return response
 
 @app.route('/convert', methods=['POST'])
 def convert_html_to_pdf():
